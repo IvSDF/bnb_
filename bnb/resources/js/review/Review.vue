@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <success v-if="success"/>
+        <success v-if="success">The operation was successful!!!!</success>
         <fatal-error v-if="error"></fatal-error>
         <div class="row" v-if="!success && !error">
             <div :class="[ {'col-md-4': twoColumn }, {'d-none': oneColumn} ]">

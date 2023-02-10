@@ -33,7 +33,7 @@ return [
      |
      */
     'storage' => [
-        'enabled'    => true,
+        'enabled'    => false,
         'driver'     => 'file', // redis, file, pdo, socket, custom
         'path'       => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
@@ -114,7 +114,7 @@ return [
      | X-Requested-With with the value XMLHttpRequest (most JS libraries send this), or have application/json as a Accept header.
      */
 
-    'capture_ajax' => true,
+    'capture_ajax' => false,
     'add_ajax_timing' => false,
 
     /*
@@ -149,20 +149,20 @@ return [
      */
 
     'collectors' => [
-        'phpinfo'         => true,  // Php version
-        'messages'        => true,  // Messages
-        'time'            => true,  // Time Datalogger
-        'memory'          => true,  // Memory usage
-        'exceptions'      => true,  // Exception displayer
-        'log'             => true,  // Logs from Monolog (merged in messages if enabled)
-        'db'              => true,  // Show database (PDO) queries and bindings
-        'views'           => true,  // Views with their data
-        'route'           => true,  // Current route information
+        'phpinfo'         => false,  // Php version
+        'messages'        => false,  // Messages
+        'time'            => false,  // Time Datalogger
+        'memory'          => false,  // Memory usage
+        'exceptions'      => false,  // Exception displayer
+        'log'             => false,  // Logs from Monolog (merged in messages if enabled)
+        'db'              => false,  // Show database (PDO) queries and bindings
+        'views'           => false,  // Views with their data
+        'route'           => false,  // Current route information
         'auth'            => false, // Display Laravel authentication status
-        'gate'            => true,  // Display Laravel Gate checks
-        'session'         => true,  // Display session data
-        'symfony_request' => true,  // Only one can be enabled..
-        'mail'            => true,  // Catch mail messages
+        'gate'            => false,  // Display Laravel Gate checks
+        'session'         => false,  // Display session data
+        'symfony_request' => false,  // Only one can be enabled..
+        'mail'            => false,  // Catch mail messages
         'laravel'         => false, // Laravel version and environment
         'events'          => false, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
@@ -170,8 +170,8 @@ return [
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
-        'models'          => true,  // Display models
-        'livewire'        => true,  // Display Livewire (when available)
+        'models'          => false,  // Display models
+        'livewire'        => false,  // Display Livewire (when available)
     ],
 
     /*
@@ -185,7 +185,7 @@ return [
 
     'options' => [
         'auth' => [
-            'show_name' => true,   // Also show the users name/email in the debugbar
+            'show_name' => false,   // Also show the users name/email in the debugbar
         ],
         'db' => [
             'with_params'       => true,   // Render SQL with the parameters substituted
@@ -229,7 +229,7 @@ return [
      |
      */
 
-    'inject' => true,
+    'inject' => false,
 
     /*
      |--------------------------------------------------------------------------

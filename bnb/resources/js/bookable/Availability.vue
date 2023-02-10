@@ -1,10 +1,12 @@
 <template>
-    <div>
+    <div id="app">
         <h6 class="text-uppercase text-secondary fw-bolder">
             Check Availability
+            <transition>
+                <span v-if="noAvailability" class="text-danger">(NOT AVAILABILITY)</span>
+                <span v-if="hasAvailability" class="text-success">(AVAILABILITY)</span>
+            </transition>
         </h6>
-        <span v-if="noAvailability" class="text-uppercase text-secondary fw-bolder text-danger">(NOT AVAILABILITY)</span>
-        <span v-if="hasAvailability" class="text-uppercase text-secondary fw-bolder text-success">(AVAILABILITY)</span>
 
         <div class="form row">
             <div class="form-group col-md-6">
@@ -33,11 +35,13 @@
                 >
                 <v-errors :errors="errorFor('to')"/>
             </div>
-            <button class="btn btn-secondary btn-block mt-3"
-                    @click="check"
-                    :disabled="loading"
+            <button
+                class="btn btn-secondary btn-block mt-3"
+                @click="check"
+                :disabled="loading"
             >
-                Check
+                <span v-if="!loading">Check</span>
+                <span v-if="loading"> <i class="fas fa-circle-notch fa-spin"></i>Checking...</span>
             </button>
         </div>
     </div>
@@ -52,44 +56,44 @@ export default {
     ],
 
     props: {
-      bookableId: Number
+      bookableId: [Number, String]
     },
 
     data() {
         return {
-            from: null,
-            to: null,
+            from: this.$store.state.lastSearch.from,
+            to: this.$store.state.lastSearch.to,
             loading: null,
             status: null,
         }
     },
 
     methods: {
-        check () {
+        async check () {
             this.loading = true;
             this.errors = null;
 
-            axios
-                .post(
-                    `/api/bookables/${this.bookableId}/availability`,
-                    {
-                        from: this.from,
-                        to: this.to
-                    }
-                )
-                .then(response => {
-                    this.status = response.status;
-                })
-                .catch(error => {
-                    if (is422(error)) {
-                        this.errors = error.response.data.errors;
-                    }
-                    this.status = error.response.status;
-                    console.log(error.response.status);
+            this.$store.dispatch('setLastSearch', {
+                from: this.from,
+                to: this.to
+            });
 
-                })
-                .then(() => (this.loading = false));
-        },
+            try {
+                this.status = (await axios.post(`/api/bookables/${this.bookableId}/availability`,
+                        {
+                            from: this.from,
+                            to: this.to
+                        })).status;
+                this.$emit("availability", this.hasAvailability);
+            } catch(err) {
+                if (is422(err)) {
+                    this.errors = err.response.data.errors;
+                }
+                this.status = err.response.status;
+                this.$emit("availability", this.hasAvailability);
+            }
+            this.loading = false;
+        }
     },
 
     computed: {

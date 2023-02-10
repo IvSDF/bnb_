@@ -3,44 +3,89 @@
         <div class="col-md-8 pb-4">
             <div class="card">
                 <div class="card-body">
-                    <div v-if="!louding">
+                    <div v-if="loading">
+                        Loading...
+                    </div>
+                    <div v-else>
                         <h2>{{ bookable.title }}</h2>
-                        <hr />
+                        <hr/>
                         <article>{{ bookable.description }}</article>
                     </div>
-                    <div v-else>Louding...</div>
                 </div>
             </div>
             <review-list :bookable-id="this.$route.params.id"></review-list>
         </div>
-        <div class="col-md-3 pb-4">
-            <availability :bookable-id="this.$route.params.id"></availability>
-        </div>
+        <div class="col-md-4 pb-4">
+            <availability
+                :bookable-id="this.$route.params.id"
+                @availability="checkPrice($event)"
+                class="mb-4"
+            ></availability>
 
+            <transition>
+                <price-breakdown v-if="price" :price="price"></price-breakdown>
+            </transition>
+            <transition>
+                <div class="row">
+                    <button
+                        class="pt-2 btn btn-outline-secondary btn-block"
+                        v-if="price"
+                    >Book now</button>
+                </div>
+            </transition>
+        </div>
     </div>
 </template>
 
 <script>
 import Availability from "./Availability";
 import ReviewList from "./ReviewList.vue";
+import {mapState} from "vuex";
+import PriceBreakdown from "./PriceBreakdown.vue";
 export default {
     components: {
         Availability,
-        ReviewList
+        ReviewList,
+        PriceBreakdown
     },
     data() {
       return {
           bookable: null,
-          louding: false
+          loading: false,
+          price: null
       };
     },
     created() {
-        this.louding = true;
-        axios.get(`/api/bookables/${this.$route.params.id}`).then(response => {
+        this.loading = true;
+        axios.get(`/api/bookables/${this.$route.params.id}`)
+            .then(response => {
             this.bookable = response.data.data;
-            this.louding = false;
+            this.loading = false;
         });
+    },
 
+    computed: mapState ({
+        lastSearch: 'lastSearch'
+    }),
+
+    methods: {
+        async checkPrice(hasAvailability){
+            if (!hasAvailability){
+                this.price = null;
+                return;
+            }
+            try {
+                this.price = (await axios.post(`/api/bookables/${this.$route.params.id}/price`,
+                    {
+                        from: this.lastSearch.from,
+                        to: this.lastSearch.to,
+                    })).data.data;
+            } catch (err) {
+                this.price = null;
+            }
+        }
     }
 };
 </script>
+
+

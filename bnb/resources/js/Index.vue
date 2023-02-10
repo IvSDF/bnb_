@@ -2,8 +2,27 @@
     <div>
         <nav class="navbar bg-white border-bottom navbar-light">
             <router-link class="navbar-brand mr-auto px-3" :to="{ name: 'home' }">BNB</router-link>
-            <router-link class="btn nav-button" :to="{ name: 'second' }">Second</router-link>
         </nav>
         <div class="container mt-4 mb-4 pr-4 pl-4"><router-view></router-view></div>
     </div>
 </template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+    data() {
+        return {
+          lastSearch: this.$store.state.lastSearch
+        };
+    },
+    computed: {
+        ...mapState({
+            lastSearchComputed: 'lastSearch'
+        }),
+        netxtCom() {
+            return 5 + 5;
+        }
+    }
+}
+</script>

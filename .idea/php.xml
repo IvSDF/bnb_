@@ -119,8 +119,8 @@
       <path value="$PROJECT_DIR$/bnb/vendor/tijsverkoyen/css-to-inline-styles" />
       <path value="$PROJECT_DIR$/bnb/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/bnb/vendor/graham-campbell/result-type" />
-      <path value="$PROJECT_DIR$/bnb/vendor/barryvdh/laravel-debugbar" />
       <path value="$PROJECT_DIR$/bnb/vendor/maximebf/debugbar" />
+      <path value="$PROJECT_DIR$/bnb/vendor/barryvdh/laravel-debugbar" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
