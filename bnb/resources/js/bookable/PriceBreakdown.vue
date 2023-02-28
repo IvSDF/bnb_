@@ -3,12 +3,15 @@
         <h6 class="text-uppercase text-secondary fw-bolder">Price</h6>
 
         <div
-            v-for="(days, price) in price.breakdown"
-            :key="price"
+            v-for="days in price.breakdown"
+            :key="days"
             class="pt-2 pb-2 border-bottom border-top d-flex justify-content-between"
         >
-            <span>
+            <span v-if="days != 1">
                 Days:
+            </span>
+            <span v-else>
+                Day:
             </span>
             <span>
                 {{ days }}

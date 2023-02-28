@@ -27,7 +27,6 @@
 </template>
 
 <script>
-// import moment from "moment";
 export default {
     name: "ReviewList",
     props: {
@@ -46,12 +45,6 @@ export default {
             .then(response => (this.reviews = response.data.data))
             .then(() => (this.loading = false));
     },
-
-    // filters: {
-    //     fromNow(value) {
-    //         return moment(value).fromNow();
-    //     }
-    // },
 }
 </script>
 

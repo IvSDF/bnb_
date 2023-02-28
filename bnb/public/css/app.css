@@ -19093,3 +19093,18 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.4s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.v-enter-active, .v-leave-active {
+  transition: all 1000ms;
+}
+
+.v-enter, .v-leave-to {
+  opacity: 0;
+}

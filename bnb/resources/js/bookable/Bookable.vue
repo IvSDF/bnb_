@@ -30,9 +30,23 @@
                     <button
                         class="pt-2 btn btn-outline-secondary btn-block"
                         v-if="price"
+                        :disabled="inBasketAlready"
+                        @click="addToBasket"
                     >Book now</button>
                 </div>
             </transition>
+            <div class="row mt-4">
+                <button
+                    class="pt-2 btn btn-outline-secondary btn-block"
+                    v-if="inBasketAlready"
+                    @click="removeFromBasket"
+                >Remove Basket</button>
+            </div>
+            <div v-if="inBasketAlready"
+                 class="mt-4 text-muted warning">
+                Seems like you`ve added this object to basket already.
+                If you want to change dates, remove from the basket first
+            </div>
         </div>
     </div>
 </template>
@@ -40,7 +54,7 @@
 <script>
 import Availability from "./Availability";
 import ReviewList from "./ReviewList.vue";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 import PriceBreakdown from "./PriceBreakdown.vue";
 export default {
     components: {
@@ -64,9 +78,17 @@ export default {
         });
     },
 
-    computed: mapState ({
-        lastSearch: 'lastSearch'
-    }),
+    computed: {
+        ...mapState ({
+            lastSearch: 'lastSearch',
+        }),
+        inBasketAlready() {
+            if (null === this.bookable) {
+                return false;
+            }
+            return this.$store.getters.inBasketAlready(this.bookable.id);
+        }
+    },
 
     methods: {
         async checkPrice(hasAvailability){
@@ -83,9 +105,23 @@ export default {
             } catch (err) {
                 this.price = null;
             }
+        },
+        addToBasket() {
+            this.$store.dispatch('addToBasket', {
+                bookable: this.bookable,
+                price: this.price,
+                dates: this.lastSearch
+            });
+        },
+        removeFromBasket() {
+            this.$store.dispatch("removeFromBasket", this.bookable.id);
         }
     }
 };
 </script>
 
-
+<style scoped>
+.warning {
+    font-size: 0.7rem;
+}
+</style>

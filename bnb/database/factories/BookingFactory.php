@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Bookable;
+use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +22,7 @@ class BookingFactory extends Factory
         return [
             'from' => $from,
             'to' => $to,
+            'price' => 0
         ];
     }
 }
